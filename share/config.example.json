@@ -1,0 +1,43 @@
+{
+  "$schema": "./api/config.schema.json",
+  "type": "unix",
+  "address": "127.0.0.1",
+  "port": 20038,
+  "parameters": {
+    "read_timeout": "100s",
+    "read_header_timeout": "10s",
+    "write_timeout": "2m",
+    "idle_timeout": "2s",
+    "max_header_bytes": 2097152,
+    "upload_folder": "./upload"
+  },
+  "security": {
+    "tls": true,
+    "certificate": "./certificate.pem",
+    "key": "./pkey.pem"
+  },
+  "databases": {
+    "relational": {
+      "type": "unix",
+      "host": "localhost",
+      "port": 5432,
+      "database": "example",
+      "password": "example123",
+      "username": "example",
+      "tls": true,
+      "certificate": "./certificate.pem",
+      "key": "./pkey.pem"
+    },
+    "session": {
+      "type": "unix",
+      "host": "127.0.0.1",
+      "port": 6789,
+      "username": "example",
+      "password": "example123",
+      "database": 12,
+      "tls": true,
+      "certificate": "./certificate.pem",
+      "key": "./pkey.pem"
+    }
+  }
+}

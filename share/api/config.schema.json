@@ -1,0 +1,241 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://github.com/chordflower/gin-example/config.schema.json",
+  "title": "Configuration",
+  "description": "Describes the server configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type":"string",
+      "description": "The reference to this schema"
+    },
+    "type": {
+      "type":"string",
+      "description": "The type of address of this server",
+      "enum": ["unix","socket"],
+      "default": "socket"
+    },
+    "address": {
+      "type":"string",
+      "description": "The address to be used by this server",
+      "examples": [
+        "127.0.0.1",
+        "0.0.0.0",
+        "/var/run/example.sock"
+      ],
+      "default":"127.0.0.1"
+    },
+    "port": {
+      "type":"integer",
+      "minimum": 1,
+      "maximum": 65535,
+      "default": 8080,
+      "description": "The port used by this server"
+    },
+    "parameters": {
+      "description": "Some server parameters",
+      "type":"object",
+      "additionalProperties": false,
+      "properties": {
+        "read_timeout": {
+          "title": "readTimeout",
+          "description": "The read timeout to be used by the server (headers+body), in golang Duration string format",
+          "type":"string",
+          "default": "100s"
+        },
+        "read_header_timeout": {
+          "title": "readHeaderTimeout",
+          "description": "The read header timeout to be used by the server (head only), in golang Duration string format",
+          "type":"string",
+          "default":"10s"
+        },
+        "write_timeout": {
+          "title": "writeTimeout",
+          "description": "The write timeout to be used by the server, in golang Duration string format",
+          "type": "string",
+          "default": "100s"
+        },
+        "idle_timeout": {
+          "title": "idleTimeout",
+          "description": "The idle timeout to be used by the server, in golang Duration string format",
+          "type": "string",
+          "default": "2s"
+        },
+        "max_header_bytes": {
+          "title": "maxHeaderBytes",
+          "description": "The maximum size of the headers in bytes",
+          "type": "integer",
+          "minimum": 0,
+          "default": 2097152
+        },
+        "upload_folder": {
+          "title": "uploadFolder",
+          "description": "Where to place the uploaded files",
+          "type":"string",
+          "default":"./upload"
+        }
+      }
+    },
+    "security": {
+      "type":"object",
+      "description": "Parameters related to TLS configuration",
+      "additionalProperties": false,
+      "properties": {
+        "tls": {
+          "type":"boolean",
+          "description": "Whether or not to enable TLS",
+          "default":false
+        },
+        "certificate": {
+          "type":"string",
+          "description": "Location of the PEM certificate to use",
+          "default": "./certificate.pem"
+        },
+        "key": {
+          "type": "string",
+          "description": "Location of the PEM key to use",
+          "default": "./key.pem"
+        }
+      },
+      "if": { "properties": { "tls": { "const": true } } },
+      "then": { "required": ["certificate","key"] }
+    },
+    "databases": {
+      "type":"object",
+      "description": "Configuration related to databases",
+      "additionalProperties": false,
+      "properties": {
+        "relational": {
+          "type":"object",
+          "description": "Configuration related to the relational database",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "The type of host of the postgresql server",
+              "enum": [
+                "unix",
+                "socket"
+              ],
+              "default": "socket"
+            },
+            "host": {
+              "type": "string",
+              "description": "The host used by postgresql",
+              "examples": [
+                "127.0.0.1",
+                "/var/run/example.sock"
+              ],
+              "default": "127.0.0.1"
+            },
+            "port": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 65535,
+              "default": 5432,
+              "description": "The port used by the postgresql server"
+            },
+            "tls": {
+              "type": "boolean",
+              "description": "Whether or not to enable TLS",
+              "default": false
+            },
+            "certificate": {
+              "type": "string",
+              "description": "Location of the PEM certificate to use",
+              "default": "./postgresql-certificate.pem"
+            },
+            "key": {
+              "type": "string",
+              "description": "Location of the PEM key to use",
+              "default": "./postgresql-key.pem"
+            },
+            "username": {
+              "type":"string",
+              "description": "The username to use",
+              "default":"example"
+            },
+            "password": {
+              "type": "string",
+              "description": "The username password to use",
+              "default": "example123"
+            },
+            "database": {
+              "type": "string",
+              "description": "The database to use",
+              "default": "example"
+            }
+          },
+          "if": { "properties": { "tls": { "const": true } } },
+          "then": { "required": ["certificate","key"] }
+        },
+        "session": {
+          "type":"object",
+          "description": "Configuration related to the redis database",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "The type of host of the redis server",
+              "enum": [
+                "unix",
+                "socket"
+              ],
+              "default": "socket"
+            },
+            "host": {
+              "type": "string",
+              "description": "The host used by redis",
+              "examples": [
+                "127.0.0.1",
+                "/var/run/example.sock"
+              ],
+              "default": "127.0.0.1"
+            },
+            "port": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 65535,
+              "default": 6789,
+              "description": "The port used by the redis server"
+            },
+            "tls": {
+              "type": "boolean",
+              "description": "Whether or not to enable TLS",
+              "default": false
+            },
+            "certificate": {
+              "type": "string",
+              "description": "Location of the PEM certificate to use",
+              "default": "./redis-certificate.pem"
+            },
+            "key": {
+              "type": "string",
+              "description": "Location of the PEM key to use",
+              "default": "./redis-key.pem"
+            },
+            "username": {
+              "type":"string",
+              "description": "The username to use",
+              "default":"example"
+            },
+            "password": {
+              "type": "string",
+              "description": "The username password to use",
+              "default": "example123"
+            },
+            "database": {
+              "type": "integer",
+              "description": "The database to use",
+              "minimum": 0,
+              "default": 12
+            }
+          },
+          "if": { "properties": { "tls": { "const": true } } },
+          "then": { "required": ["certificate","key"] }
+        }
+      }
+    }
+  }
+}

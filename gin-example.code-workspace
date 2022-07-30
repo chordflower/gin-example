@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+	"go.coverOnTestPackage": true,
+	"go.disableConcurrentTests": true,
+	"go.editorContextMenuCommands": {
+		"fillStruct": true
+	},
+	"go.formatTool": "gofmt",
+	"go.inlayHints.assignVariableTypes": true,
+	"go.inlayHints.compositeLiteralFields": true,
+	"go.inlayHints.compositeLiteralTypes": true,
+	"go.inlayHints.constantValues": true,
+	"go.inlayHints.functionTypeParameters": true,
+	"go.inlayHints.parameterNames": true,
+	"go.inlayHints.rangeVariableTypes": true,
+	"go.installDependenciesWhenBuilding": true,
+	"go.testExplorer.concatenateMessages": false,
+	"go.testExplorer.packageDisplayMode": "nested",
+	"go.vetOnSave": "workspace",
+	"goOutliner.extendExplorerTab": true,
+	"licenser.author": "carddamom"
+	}
+}

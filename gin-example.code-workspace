@@ -1,28 +1,61 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {
-	"go.coverOnTestPackage": true,
-	"go.disableConcurrentTests": true,
-	"go.editorContextMenuCommands": {
-		"fillStruct": true
-	},
-	"go.formatTool": "gofmt",
-	"go.inlayHints.assignVariableTypes": true,
-	"go.inlayHints.compositeLiteralFields": true,
-	"go.inlayHints.compositeLiteralTypes": true,
-	"go.inlayHints.constantValues": true,
-	"go.inlayHints.functionTypeParameters": true,
-	"go.inlayHints.parameterNames": true,
-	"go.inlayHints.rangeVariableTypes": true,
-	"go.installDependenciesWhenBuilding": true,
-	"go.testExplorer.concatenateMessages": false,
-	"go.testExplorer.packageDisplayMode": "nested",
-	"go.vetOnSave": "workspace",
-	"goOutliner.extendExplorerTab": true,
-	"licenser.author": "carddamom"
-	}
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "../todomanager"
+    }
+  ],
+  "settings": {
+    "go.coverOnTestPackage": true,
+    "go.disableConcurrentTests": true,
+    "go.editorContextMenuCommands": {
+      "fillStruct": true
+    },
+    "go.formatTool": "gofmt",
+    "go.inlayHints.assignVariableTypes": true,
+    "go.inlayHints.compositeLiteralFields": true,
+    "go.inlayHints.compositeLiteralTypes": true,
+    "go.inlayHints.constantValues": true,
+    "go.inlayHints.functionTypeParameters": true,
+    "go.inlayHints.parameterNames": true,
+    "go.inlayHints.rangeVariableTypes": true,
+    "go.installDependenciesWhenBuilding": true,
+    "go.testExplorer.concatenateMessages": false,
+    "go.testExplorer.packageDisplayMode": "nested",
+    "go.vetOnSave": "workspace",
+    "goOutliner.extendExplorerTab": true,
+    "licenser.author": "carddamom",
+    "goOutliner.enableDebugChannel": true,
+    "go.lintOnSave": "off",
+    "extensions.ignoreRecommendations": false,
+    "sqltools.connections": [
+      {
+        "previewLimit": 90,
+        "driver": "SQLite",
+        "name": "Todo Manager",
+        "database": "/home/carddamom/databases/todoman.db"
+      }
+    ],
+    "sqltools.useNodeRuntime": true
+  },
+  "extensions": {
+    "recommendations": [
+      "asciidoctor.asciidoctor-vscode",
+      "alefragnani.bookmarks",
+      "editorconfig.editorconfig",
+      "golang.go",
+      "msyrus.go-doc",
+      "766b.go-outliner",
+      "liuchao.go-struct-tag",
+      "ymotongpoo.licenser",
+      "christian-kohler.path-intellisense",
+      "qcz.text-power-tools",
+      "qufiwefefwoyn.inline-sql-syntax",
+      "mtxr.sqltools",
+      "sensourceinc.vscode-sql-beautify",
+      "mtxr.sqltools-driver-sqlite"
+    ]
+  }
 }

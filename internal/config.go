@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"emperror.dev/errors"
+	"github.com/chordflower/gin_example/internal/utils"
 )
 
 // Configuration describes the server configuration
@@ -36,7 +37,10 @@ func NewWithDefaults() *Configuration {
 
 // Validate is a method to validate if the configuration is correct or not
 func (c *Configuration) Validate() error {
-	return errors.WrapIf(nil, "Validation error in configuration root")
+	v := utils.NewValidator()
+	v.IsNotEmpty(string(c.Type), "The server type must not be empty")
+	v.IsPort(c.Port, "The server port must be a valid port")
+	return errors.WrapIf(errors.Combine(v.AllValid(), c.Security.Validate(), c.Databases.Validate(), c.Parameters.Validate()), "Validation error in configuration root")
 }
 
 // Databases contains the configuration related to databases
@@ -56,7 +60,7 @@ func newDatabaseWithDefaults() *Databases {
 
 // Validate is a method to validate if the configuration is correct or not
 func (c *Databases) Validate() error {
-	return errors.WrapIf(nil, "Validation error in the database key")
+	return errors.WrapIf(errors.Combine(c.Relational.Validate(), c.Session.Validate()), "Validation error in the database key")
 }
 
 // Relational contains the configuration related to the relational database
@@ -97,6 +101,12 @@ func newRelationalWithDefaults() *Relational {
 
 // Validate is a method to validate if the configuration is correct or not
 func (c *Relational) Validate() error {
+	v := utils.NewValidator()
+	v.IsNotEmpty(c.Database, "The postgresql database must not be empty")
+	v.IsPort(c.Port, "The postgresql port must be a valid port")
+	v.Check(c.TLS && len(c.Certificate) != 0, "When TLS is active the certificate must not be blank")
+	v.Check(c.TLS && len(c.Key) != 0, "When TLS is active the key must not be blank")
+	v.IsNotEmpty(string(c.Type), "The postgresql type must not be empty")
 	return errors.WrapIf(nil, "Validation error in the relational key")
 }
 
@@ -138,6 +148,12 @@ func newSessionWithDefaults() *Session {
 
 // Validate is a method to validate if the configuration is correct or not
 func (c *Session) Validate() error {
+	v := utils.NewValidator()
+	v.IsBetweenNumbers(c.Database, 0, 15, "The redis database must be between 0 and 15")
+	v.IsPort(c.Port, "The redis port must be a valid port")
+	v.Check(c.TLS && len(c.Certificate) != 0, "When TLS is active the certificate must not be blank")
+	v.Check(c.TLS && len(c.Key) != 0, "When TLS is active the key must not be blank")
+	v.IsNotEmpty(string(c.Type), "The redis type must not be empty")
 	return errors.WrapIf(nil, "Validation error in the session key")
 }
 
@@ -170,6 +186,13 @@ func newParametersWithDefaults() *Parameters {
 
 // Validate is a method to validate if the configuration is correct or not
 func (c *Parameters) Validate() error {
+	v := utils.NewValidator()
+	v.IsDuration(c.IdleTimeout, "The idle timeout must be a valid golang duration")
+	v.IsPositive(c.MaxHeaderBytes, "The maximum header bytes must be a positive number")
+	v.IsDuration(c.ReadHeaderTimeout, "The read header timeout must be a valid golang duration")
+	v.IsDuration(c.ReadTimeout, "The read timeout must be a valid golang duration")
+	v.IsNotEmpty(c.UploadFolder, "The upload folder must not be empty")
+	v.IsDuration(c.WriteTimeout, "The write timeout must be a valid golang duration")
 	return errors.WrapIf(nil, "Validation error in the parameters key")
 }
 
@@ -217,7 +240,10 @@ func newSecurityWithDefaults() *Security {
 
 // Validate is a method to validate if the configuration is correct or not
 func (c *Security) Validate() error {
-	return errors.WrapIf(nil, "Validation error in the security key")
+	v := utils.NewValidator()
+	v.Check(c.TLS && len(c.Certificate) != 0, "When TLS is active the certificate must not be blank")
+	v.Check(c.TLS && len(c.Key) != 0, "When TLS is active the key must not be blank")
+	return errors.WrapIf(v.AllValid(), "Validation error in the security key")
 }
 
 // Type is the address type
